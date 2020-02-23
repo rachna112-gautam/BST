@@ -1,0 +1,80 @@
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
+struct Node {
+    int data;
+    Node* left,*right;
+    };
+
+Node* constructTree(int* in,int* pre,int inS,int inE,int preS,int preE){
+    if(inS > inE || preS > preE)
+    return NULL;
+    
+    int rootData = pre[preS];
+    int rootIn = -1;
+    for(int i = inS ; i <= inE ; i++)
+    {
+        if(in[i] == rootData)
+        {  rootIn = i;
+          break;
+        }
+    }
+    int linS = inS;
+    int linE = rootIn - 1;
+    int lpreS = preS + 1; 
+    int lpreE = linE - linS + lpreS ;
+    int rinS = rootIn + 1;
+    int rinE = inE;
+    int rpreS = lpreE + 1;
+    int rpreE = preE;
+
+    Node* newNode = new Node;
+    newNode->data = rootData;
+    newNode->left = constructTree(in,pre,linS,linE,lpreS,lpreE);
+    newNode->right = constructTree(in,pre,rinS,rinE,rpreS,rpreE);
+return newNode;
+}
+
+
+Node* buildTree(int* in , int* pre ,int size){
+    return constructTree(in,pre,0,size-1,0,size-1);
+}
+void postorder(Node* root){
+    if(root==NULL)
+    return;
+    if(root->left)
+    postorder(root->left);
+    if(root->right)
+    postorder(root->right);
+    cout<<root->data<<" ";
+}
+void inorder(Node* root){
+    if(root==NULL)
+    return;
+    if(root->left)
+    inorder(root->left);
+    cout<<root->data<<" ";
+    if(root->right)
+    inorder(root->right);
+    
+}
+
+
+int main() {
+    // int in[] = {4, 2, 5, 1, 8, 6, 9, 3, 7};
+    // int pre[] = {1, 2, 4, 5, 3, 6, 8, 9, 7};
+    int n,in[10],pre[10];
+    cin>>n;
+    for(int i=0;i<n;i++)
+    cin>>in[i];
+    for(int i=0;i<n;i++)
+    cin>>pre[i];
+    struct Node* root = buildTree(in,pre,n);
+   
+    cout<<"PostOrder Traversal:";
+    postorder(root);
+    cout<<endl;
+    cout<<"InOrder Traversal:";
+    inorder(root);
+    return 0;
+}
