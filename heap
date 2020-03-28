@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <iostream>
+using namespace std;
+int heap[100];
+int count = 0;
+int getParentId(int index)
+{
+    return index/2;
+}
+int getLeftId(int index){
+    return index*2;
+}
+int getRightId(int index){
+    return index*2 + 1;
+}
+
+void heapifyMin(int index)
+{
+    if(index <= 1)
+    return;
+    int parent = getParentId(index);
+    if(heap[index] < heap[parent])
+    {
+        int temp = heap[index];
+        heap[index] = heap[parent];
+        heap[parent] = temp;
+        heapifyMin(parent);
+    }
+}
+
+void display(){
+    for(int i = 1; i <= count; i++)
+    {
+        cout<<heap[i]<<" ";
+    }
+}
+void push(int value){
+    count++;
+    heap[count] = value;
+    heapifyMin(count);
+}
+
+
+void downHeapify(int index)
+{
+   if(index*2 > count)
+   return;
+    int l = getLeftId(index);
+    int r = getRightId(index);
+    int smallest = index;
+    if(l <= count && heap[l] < heap[smallest])
+       smallest = l;
+    if(r <= count && heap[r] < heap[smallest] )
+      smallest = r;
+      if(smallest != index)
+      {
+          int temp = heap[index];
+          heap[index] = heap[smallest];
+          heap[smallest] = temp;
+          downHeapify(smallest);
+      }
+      
+}
+void pop()
+{
+    if(count == 0)
+    return;
+    heap[1] = heap[count];
+    count--;
+    downHeapify(1);
+}
+int main()
+{  
+   push(5);
+   push(4);
+   push(3);
+   push(2);
+   push(1);
+    display();
+    pop();
+    cout<<endl<<"After deletion"<<endl;
+    display();
+return 0;
+}
