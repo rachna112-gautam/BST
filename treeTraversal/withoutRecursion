@@ -1,0 +1,18 @@
+void inOrder(Node* root)
+{
+    stack<Node*> s;
+    Node* cur = root;
+    while(!s.empty() || cur != NULL)
+    { 
+        while(cur){
+            s.push(cur);
+            cur = cur->left;
+        }
+            Node* k = s.top();
+            cout<<k->data;
+            cur = k->right;
+            s.pop();
+
+      
+    }
+}
