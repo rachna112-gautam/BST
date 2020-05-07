@@ -1,3 +1,23 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node{
+    int data;
+    struct Node* left, *right;
+}*root;
+struct Node* createTree(Node* root)
+{
+    int v;
+    cin>>v;
+    if(v == -1)
+    return NULL;
+    root = new Node;
+    root->data = v;
+    root->left = createTree(root->left);
+    root->right = createTree(root->right);
+return root;
+}
+
 void inOrder(Node* root)
 {
     stack<Node*> s;
@@ -9,10 +29,57 @@ void inOrder(Node* root)
             cur = cur->left;
         }
             Node* k = s.top();
-            cout<<k->data;
+          cout<<k->data<<" ";
             cur = k->right;
             s.pop();
 
       
     }
+}
+void postOrder(Node* root)
+{
+    stack<Node*> s1, s2;
+    s1.push(root);
+    while(!s1.empty()){
+        Node* k = s1.top();
+        s2.push(k);
+        s1.pop();
+        if(k->left)
+        s1.push(k->left);
+        if(k->right)
+        s1.push(k->right);
+        
+    }
+    while(!s2.empty()){
+        cout<<s2.top()->data<<" ";
+        s2.pop();
+    }
+    
+}
+void preOrder(Node* root){
+    stack<Node*> s;
+    Node* cur = root;
+    while(!s.empty() || cur != NULL)
+    {
+            while(cur){
+            s.push(cur);
+            cout<<cur->data<<" ";
+            cur = cur->left;
+        }
+            Node* k = s.top();
+          
+            cur = k->right;
+            s.pop();
+
+
+    }
+}
+int main(){
+    root = NULL;
+    root = createTree(root);
+    inOrder(root);
+    cout<<endl;
+    preOrder(root);
+    cout<<endl;
+    postOrder(root);
 }
